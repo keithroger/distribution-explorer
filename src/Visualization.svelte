@@ -8,7 +8,9 @@
 		{x: 0, y: 0.4},
 		{x: 2, y:0.24},
 		{x: 4, y:0.1},
-	]
+	];
+
+	export let text;
 	
 	let viz;
 
@@ -70,5 +72,7 @@
 <style>
 </style>
 
+<!-- testing -->
+<p>{text}</p>
 
 <div bind:this={viz} class="chart"></div>

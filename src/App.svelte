@@ -17,8 +17,8 @@
 	 }];
 
 	let modeSelected = 'Distribution';
-	let inputs = [0, 1, 0]
-	let data = null
+	let inputs = [0, 1, 0];
+	let data = null;
 	
 	$: currMode = modes.find(d => d.name === modeSelected);
 
@@ -31,7 +31,7 @@
 				inputs,
 			})
 		}).then(res => res.json())
-		.then(data => console.log(data))
+		.then(json => data = JSON.stringify(json))
 		.catch((error) => {
 			console.error('Error:', error);
 });
@@ -68,10 +68,16 @@
 			</form>
 		</div>
 
-		<!-- testing -->
-		{data}
+		{#await data}
+		<p>waiting for data...</p>
+		{:then d}
+		<Visualization text={d}/>
+		{:catch error}
+		<p>{error.message}</p>
+		{/await}
 
-		<Visualization/>
+		<!-- <Visualization /> -->
+
 
 	</div>
 
