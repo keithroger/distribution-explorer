@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-import { attr } from 'svelte/internal';
+	//import { attr } from 'svelte/internal';
 	let data = [
 		{x: -5, y: 0.1},
 		{x: -3, y:0.3},
@@ -13,7 +13,7 @@ import { attr } from 'svelte/internal';
 	let viz;
 
 	let margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = 460 - margin.left - margin.right,
+    width = 647 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
 	onMount(() => {
@@ -45,35 +45,29 @@ import { attr } from 'svelte/internal';
 
 		svg.append("path")
 			.datum(data)
-			.attr("class", "line")
+			.attr("fill", "none")
+			.attr("stroke", "#734f96")
+			.attr("stroke-width", 2.5)
 			.attr("d", line);
 
-		svg.selectAll(".dot")
-    		.data(dataset)
-			.enter().append("circle") // Uses the enter().append() method
-				.attr("class", "dot") // Assign a class for styling
-				.attr("cx", function(d, i) { return xScale(i) })
-				.attr("cy", function(d) { return yScale(d.y) })
-				.attr("r", 5)
-				.on("mouseover", function(a, b, c) { 
-  				console.log(a) 
-        	this.attr('class', 'focus')
-			})
-      		.on("mouseout", function() {  })
+		// Add a lower filled section for cdf data
+
+		// svg.selectAll(".dot")
+    	// 	.data(data)
+		// 	.enter().append("circle") // Uses the enter().append() method
+		// 		.attr("class", "dot") // Assign a class for styling
+		// 		.attr("cx", function(d, i) { return xScale(i) })
+		// 		.attr("cy", function(d) { return yScale(d.y) })
+		// 		.attr("r", 5)
+		// 		.on("mouseover", function(a, b, c) { 
+  		// 		console.log(a) 
+        // 	this.attr('class', 'focus')
+		// 	})
+      	// 	.on("mouseout", function() {  })
 	});
 </script>
 
 <style>
-	.line {
-		fill: none;
-		stroke: #ffab00;
-		stroke-width: 3;
-	}
-  
-	.overlay {
-	fill: none;
-	pointer-events: all;
-	}
 </style>
 
 
