@@ -2,15 +2,10 @@
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
 	//import { attr } from 'svelte/internal';
-	let data = [
-		{x: -5, y: 0.1},
-		{x: -3, y:0.3},
-		{x: 0, y: 0.4},
-		{x: 2, y:0.24},
-		{x: 4, y:0.1},
-	];
 
-	export let text;
+	export let data;
+
+	console.log(data)
 	
 	let viz;
 
@@ -27,7 +22,7 @@
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		let xScale = d3.scaleLinear()
-			.domain(d3.extent(data, d => d.x))
+			.domain(d3.extent(data, d => d.X))
 			.range([0, width]);
 
 		svg.append("g")
@@ -35,7 +30,7 @@
 			.call(d3.axisBottom(xScale));
 
 		let yScale = d3.scaleLinear()
-			.domain([0, d3.max(data, d => d.y)])
+			.domain([0, d3.max(data, d => d.Y)])
 			.range([ height, 0 ]);
 
     	svg.append("g")
@@ -68,11 +63,5 @@
       	// 	.on("mouseout", function() {  })
 	});
 </script>
-
-<style>
-</style>
-
-<!-- testing -->
-<p>{text}</p>
 
 <div bind:this={viz} class="chart"></div>

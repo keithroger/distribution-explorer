@@ -1,59 +1,87 @@
 <script>
-	import Nav from './Nav.svelte'
-	import Visualization from './Visualization.svelte';
-	
-	let modes = [{
-		name: 'Distribution',
-		params: ['Mean', 'Standard Deviation'],
-		defaults: [0, 1],
-	 }, {
-		name: 'PDF', // display with point
-		params: ['Mean', 'Standard Deviation', 'x'],
-		defaults: [0, 1, 0]
-	 }, {
-		name: 'CDF', // display with filled area under curve
-		params: ['Mean', 'Standard Deviation', 'x'],
-		defaults: [0, 1, 0]
-	 }];
+	import Nav from "./Nav.svelte"
+	import Visualization from "./Visualization.svelte";
 
-	let modeSelected = 'Distribution';
-	let inputs = [0, 1, 0];
-	let data = null;
-	
-	$: currMode = modes.find(d => d.name === modeSelected);
+	let distributions = [{
+		name: "Normal",
+		modes: [
+			{
+				name: "Distribution",
+				params: ["Mean", "Standard Deviation"],
+				defaults: [0, 1],
+			}, {
+				name: "PDF", // display with point
+				params: ["Mean", "Standard Deviation", "x"],
+				defaults: [0, 1, 0]
+			}, {
+				name: "CDF", // display with filled area under curve
+				params: ["Mean", "Standard Deviation", "x"],
+				defaults: [0, 1, 0]
+			}
+		]
+	}, {
+		name: "Students' T",
+		modes: [],
+	}, {
+		name: "Uniform",
+		modes: [],
+	}, {
+		name: "Poisson",
+		modes: [],
+	}, {
+		name: "Gamma",
+		modes: [],
+	}, {
+		name: "Beta",
+		modes: [],
+	}];
 
-	async function fetchData(event) {
-		fetch("/api", {
+
+	let currDist = distributions[0];
+	let currMode = currDist.modes[0];
+	let currArgs = [0, 1, 0];
+
+	// $: currParams = distributions.find(d => d.name === currDist).modes.find(d => d.name === currMode) 
+
+	async function fetchData() {
+		const response = await fetch("/api", {
 			method: "POST",
 			headers: {"accept": "application/json"},
 			body: JSON.stringify({
-				modeSelected,
-				inputs,
+				"Distribution": currDist.name,
+				"Mode": currMode.name,
+				"Args": currArgs, 
 			})
-		}).then(res => res.json())
-		.then(json => data = JSON.stringify(json))
-		.catch((error) => {
-			console.error('Error:', error);
-});
+		});
 
+		const json = await response.json()
+		
+		if (response.ok) {
+			return json
+		}
 	}
+	
+	let promise = fetchData();
+
 
 </script>
 
 
-<Nav/>
+<Nav bind:currDist={currDist} {distributions}/>
 <main>
 	<h1>Normal Distribution</h1>
 
 	<div class="main-columns">
 		<div>
 			<form>
-				<label for="distribution">Mode:</label>
+				<label for="mode">Mode:</label>
 
 				<div class="radiobtn-list">
-					{#each modes as mode}
+					{#each currDist.modes as mode}
 					<label for={mode.name}>
-						<input type="radio" id="{mode.name}" name="mode" value={mode.name} bind:group={modeSelected}>
+						<!-- could add onclick method to change number of parameters in inputs array -->
+						<input type="radio" name="mode" id={mode.name} value={mode}
+							bind:group={currMode}>
 						<span>{mode.name}</span>
 					</label>
 					{/each}
@@ -61,23 +89,21 @@
 
 				{#each currMode.params as param, i}
 				<label for={param}>{param}</label>
-				<input type=text id={param} name={param} bind:value={inputs[i]}><br>
+				<input type=text id={param} name={param} bind:value={currArgs[i]}><br>
 				{/each}
 
-				<input type=submit id="Submit" value="Submit" on:click|preventDefault={fetchData}>
+				<input type=submit id="Submit" value="Submit" on:click|preventDefault={() => promise = fetchData()}>
 			</form>
 		</div>
 
-		{#await data}
-		<p>waiting for data...</p>
-		{:then d}
-		<Visualization text={d}/>
-		{:catch error}
-		<p>{error.message}</p>
-		{/await}
 
-		<!-- <Visualization /> -->
-
+		<div>
+			{#await promise then data}
+			<Visualization {data}/>
+			{:catch error}
+			<p>Error Message: {error.message}</p>
+			{/await}
+		</div>
 
 	</div>
 
