@@ -18,15 +18,20 @@ type Point struct {
 }
 
 type DistRequest struct {
-	Distribution string
-	Mode         string
-	Args         []float64
+	Name string
+	Mode string
+	Args []float64
+}
+
+type Distribution interface {
+	Prob(float64) float64
+	CDF(float64) float64
 }
 
 func (d *DistRequest) getData() []Point {
-	data := make([]Point, n)
+	var data []Point
 
-	switch d.Distribution {
+	switch d.Name {
 	case "Normal":
 		switch d.Mode {
 		case "Distribution":
@@ -35,9 +40,9 @@ func (d *DistRequest) getData() []Point {
 				Sigma: d.Args[1],
 			}
 
-			for i := 0; i < 200; i++ {
-				data[i] = Point{float64(i), dist.Prob(float64(i))}
-			}
+			begin, end := -4.0*dist.Sigma, 4.0*dist.Sigma
+			data = createPoints(dist, begin, end)
+
 		}
 
 	case "Student's T":
@@ -45,6 +50,20 @@ func (d *DistRequest) getData() []Point {
 	}
 
 	return data
+}
+
+func createPoints(dist Distribution, begin, end float64) []Point {
+	points := make([]Point, n)
+	step := (end - begin) / float64(n)
+
+	for i := 0; i < n; i++ {
+		x := begin + step*float64(i)
+		y := dist.Prob(x)
+
+		points[i] = Point{x, y}
+	}
+
+	return points
 }
 
 func api(w http.ResponseWriter, r *http.Request) {

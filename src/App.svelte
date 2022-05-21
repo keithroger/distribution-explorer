@@ -48,7 +48,7 @@
 			method: "POST",
 			headers: {"accept": "application/json"},
 			body: JSON.stringify({
-				"Distribution": currDist.name,
+				"Name": currDist.name,
 				"Mode": currMode.name,
 				"Args": currArgs, 
 			})
