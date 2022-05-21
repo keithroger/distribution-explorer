@@ -37,8 +37,8 @@
     		.call(d3.axisLeft(yScale));
 
 		let line = d3.line()
-			.x(d => xScale(d.x))
-			.y(d => yScale(d.y))
+			.x(d => xScale(d.X))
+			.y(d => yScale(d.Y))
 
 		svg.append("path")
 			.datum(data)
