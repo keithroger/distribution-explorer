@@ -149,7 +149,7 @@ func (d *DistRequest) getData() GraphData {
 			P: d.Args[1],
 		}
 
-		data.Points = make([]Point, int(dist.N))
+		data.Points = make([]Point, int(dist.N)+1)
 		for i := range data.Points {
 			data.Points[i] = Point{float64(i), dist.Prob(float64(i))}
 		}
