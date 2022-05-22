@@ -31,6 +31,20 @@
 			}
 		],
 	}, {
+		name: "Chi-Squared",
+		modes: [
+			{
+				name: "Distribution",
+				params: ["Degrees of Freedom"],
+			}, {
+				name: "PDF",
+				params: ["Degrees of Freedom", "x"]
+			}, {
+				name: "CDF",
+				params: ["Degrees of Freedom", "x"]
+			}
+		],
+	}, {
 		name: "Uniform",
 		modes: [],
 	}, {
@@ -45,9 +59,15 @@
 	}];
 
 
-	let currDist = distributions[0];
-	let currMode = currDist.modes[0];
-	let currArgs = ["0", "1", "0", "0"];
+	// let currDist = distributions[0];
+	// let currMode = currDist.modes[0];
+	// let currArgs = ["0", "1", "0", "0"];
+
+	let formInfo = {
+		dist: distributions[0],
+		mode: distributions[0].modes[0],
+		args: ["0", "1", "0", "0"],
+	}
 
 	// $: currParams = distributions.find(d => d.name === currDist).modes.find(d => d.name === currMode) 
 
@@ -56,9 +76,9 @@
 			method: "POST",
 			headers: {"accept": "application/json"},
 			body: JSON.stringify({
-				"Name": currDist.name,
-				"Mode": currMode.name,
-				"Args": currArgs.map(str => Number(str)), 
+				"Name": formInfo.dist.name,
+				"Mode": formInfo.mode.name,
+				"Args": formInfo.args.map(str => Number(str)), 
 			})
 		});
 
@@ -75,7 +95,8 @@
 </script>
 
 
-<Nav bind:currDist={currDist} {distributions}/>
+<Nav bind:formInfo={formInfo} {distributions}/>
+
 <main>
 	<h1>Normal Distribution</h1>
 
@@ -85,19 +106,18 @@
 				<label for="mode">Mode:</label>
 
 				<div class="radiobtn-list">
-					{#each currDist.modes as mode}
+					{#each formInfo.dist.modes as mode}
 					<label for={mode.name}>
-						<!-- could add onclick method to change number of parameters in inputs array -->
 						<input type="radio" name="mode" id={mode.name} value={mode}
-							bind:group={currMode}>
+							bind:group={formInfo.mode}>
 						<span>{mode.name}</span>
 					</label>
 					{/each}
 				</div>
 
-				{#each currMode.params as param, i}
+				{#each formInfo.mode.params as param, i}
 				<label for={param}>{param}</label>
-				<input type=text id={param} name={param} bind:value={currArgs[i]}><br>
+				<input type=text id={param} name={param} bind:value={formInfo.args[i]}><br>
 				{/each}
 
 				<input type=submit id="Submit" value="Submit" on:click|preventDefault={() => promise = fetchData()}>
@@ -108,6 +128,7 @@
 		<div>
 			{#await promise then data}
 			<Visualization {data}/>
+			<!-- use if then block to create a bar graph -->
 			{:catch error}
 			<p>Error Message: {error.message}</p>
 			{/await}

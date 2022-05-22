@@ -81,6 +81,24 @@ func (d *DistRequest) getData() GraphData {
 			data.CDF = curvePoints(dist, begin, end)
 			data.PDF = []Point{}
 		}
+	case "Chi-Squared":
+		dist := distuv.ChiSquared{
+			K: d.Args[0],
+		}
+		begin, end := 0.000001, 25.0
+		data.Line = curvePoints(dist, begin, end)
+		switch d.Mode {
+		case "Distribution":
+			data.CDF = curvePoints(dist, begin, end)
+			data.PDF = []Point{}
+		case "PDF":
+			data.PDF = []Point{{d.Args[1], dist.Prob(d.Args[1])}}
+			data.CDF = []Point{}
+		case "CDF":
+			begin, end := 0.000001, math.Min(d.Args[1], 25.0)
+			data.CDF = curvePoints(dist, begin, end)
+			data.PDF = []Point{}
+		}
 
 	}
 
@@ -115,6 +133,7 @@ func api(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 
+		fmt.Println("dist: ", distReq.Name)
 		fmt.Println("mode: ", distReq.Mode)
 		fmt.Println("inputs: ", distReq.Args)
 

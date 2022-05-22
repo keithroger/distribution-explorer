@@ -1,6 +1,13 @@
 <script>
-    export let currDist;
+    export let formInfo;
     export let distributions;
+
+    function clickMenu(distribution) {
+        formInfo.dist = distribution;
+        formInfo.mode = distribution.modes[0];
+        formInfo = {...formInfo}
+        // todo set defaults as arguments
+    }
 </script>
 
 <nav class="navbar-container">
@@ -9,7 +16,8 @@
     </div>
     <ul class=navbar-menu-items>
         {#each distributions as distribution}
-        <li class:selected={currDist.name === distribution.name} on:click={() => currDist = distribution}>
+        <li class:selected={formInfo.dist.name == distribution.name}
+            on:click={() => clickMenu(distribution)}>
             {distribution.name}
         </li>
         {/each}

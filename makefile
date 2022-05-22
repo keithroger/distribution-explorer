@@ -3,8 +3,8 @@
 build:
 	npm run build
 
-run: build
-	go run main.go
+run:
+	npm run build && go run main.go
 
 lint:
 	golangcli-lint run --enable-all
