@@ -9,7 +9,7 @@
     </div>
     <ul class=navbar-menu-items>
         {#each distributions as distribution}
-        <li class:selected={currDist.name === distribution.name} on:click={currDist = distribution}>
+        <li class:selected={currDist.name === distribution.name} on:click={() => currDist = distribution}>
             {distribution.name}
         </li>
         {/each}

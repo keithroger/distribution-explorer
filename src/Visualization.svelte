@@ -22,7 +22,7 @@
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		let xScale = d3.scaleLinear()
-			.domain(d3.extent(data, d => d.X))
+			.domain(d3.extent(data.Line, d => d.X))
 			.range([0, width]);
 
 		svg.append("g")
@@ -30,37 +30,43 @@
 			.call(d3.axisBottom(xScale));
 
 		let yScale = d3.scaleLinear()
-			.domain([0, d3.max(data, d => d.Y)])
+			.domain([0, d3.max(data.Line, d => d.Y)])
 			.range([ height, 0 ]);
 
     	svg.append("g")
     		.call(d3.axisLeft(yScale));
+
+		let area = d3.area()
+			.x(d => xScale(d.X))
+			.y0(height)
+			.y1(d => yScale(d.Y));
+
+		svg.append("path")
+			.datum(data.CDF)
+			.attr("fill", "#dbd0e6")
+			.attr("d", area)
 
 		let line = d3.line()
 			.x(d => xScale(d.X))
 			.y(d => yScale(d.Y))
 
 		svg.append("path")
-			.datum(data)
+			.datum(data.Line)
 			.attr("fill", "none")
 			.attr("stroke", "#734f96")
 			.attr("stroke-width", 2.5)
 			.attr("d", line);
 
-		// Add a lower filled section for cdf data
-
-		// svg.selectAll(".dot")
-    	// 	.data(data)
-		// 	.enter().append("circle") // Uses the enter().append() method
-		// 		.attr("class", "dot") // Assign a class for styling
-		// 		.attr("cx", function(d, i) { return xScale(i) })
-		// 		.attr("cy", function(d) { return yScale(d.y) })
-		// 		.attr("r", 5)
-		// 		.on("mouseover", function(a, b, c) { 
-  		// 		console.log(a) 
-        // 	this.attr('class', 'focus')
-		// 	})
-      	// 	.on("mouseout", function() {  })
+		if (data.PDF.length > 0) {
+		svg.selectAll("mycircle")
+			.data(data.PDF)
+			.enter()
+			.append("circle")
+			.attr("cx", d => xScale(d.X))
+			.attr("cy", d => yScale(d.Y))
+			.attr("r", "8")
+			.style("fill", "#734f96");
+		}
 	});
 </script>
 

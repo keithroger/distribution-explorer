@@ -8,20 +8,28 @@
 			{
 				name: "Distribution",
 				params: ["Mean", "Standard Deviation"],
-				defaults: [0, 1],
 			}, {
 				name: "PDF", // display with point
 				params: ["Mean", "Standard Deviation", "x"],
-				defaults: [0, 1, 0]
 			}, {
 				name: "CDF", // display with filled area under curve
 				params: ["Mean", "Standard Deviation", "x"],
-				defaults: [0, 1, 0]
 			}
 		]
 	}, {
-		name: "Students' T",
-		modes: [],
+		name: "Student's T",
+		modes: [
+			{
+				name: "Distribution",
+				params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom"],
+			}, {
+				name: "PDF",
+				params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom", "x"],
+			}, {
+				name: "CDF",
+				params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom", "x"],
+			}
+		],
 	}, {
 		name: "Uniform",
 		modes: [],
@@ -39,7 +47,7 @@
 
 	let currDist = distributions[0];
 	let currMode = currDist.modes[0];
-	let currArgs = [0, 1, 0];
+	let currArgs = ["0", "1", "0", "0"];
 
 	// $: currParams = distributions.find(d => d.name === currDist).modes.find(d => d.name === currMode) 
 
@@ -50,7 +58,7 @@
 			body: JSON.stringify({
 				"Name": currDist.name,
 				"Mode": currMode.name,
-				"Args": currArgs, 
+				"Args": currArgs.map(str => Number(str)), 
 			})
 		});
 
