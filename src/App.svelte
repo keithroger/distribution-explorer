@@ -1,75 +1,15 @@
 <script>
-	import Nav from "./Nav.svelte"
-	import Visualization from "./Visualization.svelte";
+	import Nav from "./Nav.svelte";
+	import Continous from "./Continous.svelte";
+	import Discrete from "./Discrete.svelte";
 
-	let distributions = [{
-		name: "Normal",
-		modes: [
-			{
-				name: "Distribution",
-				params: ["Mean", "Standard Deviation"],
-			}, {
-				name: "PDF", // display with point
-				params: ["Mean", "Standard Deviation", "x"],
-			}, {
-				name: "CDF", // display with filled area under curve
-				params: ["Mean", "Standard Deviation", "x"],
-			}
-		]
-	}, {
-		name: "Student's T",
-		modes: [
-			{
-				name: "Distribution",
-				params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom"],
-			}, {
-				name: "PDF",
-				params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom", "x"],
-			}, {
-				name: "CDF",
-				params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom", "x"],
-			}
-		],
-	}, {
-		name: "Chi-Squared",
-		modes: [
-			{
-				name: "Distribution",
-				params: ["Degrees of Freedom"],
-			}, {
-				name: "PDF",
-				params: ["Degrees of Freedom", "x"]
-			}, {
-				name: "CDF",
-				params: ["Degrees of Freedom", "x"]
-			}
-		],
-	}, {
-		name: "Uniform",
-		modes: [],
-	}, {
-		name: "Poisson",
-		modes: [],
-	}, {
-		name: "Gamma",
-		modes: [],
-	}, {
-		name: "Beta",
-		modes: [],
-	}];
-
-
-	// let currDist = distributions[0];
-	// let currMode = currDist.modes[0];
-	// let currArgs = ["0", "1", "0", "0"];
+	import {distributions} from "./distributions.js";
 
 	let formInfo = {
 		dist: distributions[0],
 		mode: distributions[0].modes[0],
 		args: ["0", "1", "0", "0"],
 	}
-
-	// $: currParams = distributions.find(d => d.name === currDist).modes.find(d => d.name === currMode) 
 
 	async function fetchData() {
 		const response = await fetch("/api", {
@@ -115,6 +55,7 @@
 					{/each}
 				</div>
 
+				<!-- todo: make input into sliders -->
 				{#each formInfo.mode.params as param, i}
 				<label for={param}>{param}</label>
 				<input type=text id={param} name={param} bind:value={formInfo.args[i]}><br>
@@ -127,8 +68,11 @@
 
 		<div>
 			{#await promise then data}
-			<Visualization {data}/>
-			<!-- use if then block to create a bar graph -->
+				{#if formInfo.dist.continous === true}
+					<Continous {data}/>
+				{:else}
+					<Discrete {data}/>
+				{/if}
 			{:catch error}
 			<p>Error Message: {error.message}</p>
 			{/await}

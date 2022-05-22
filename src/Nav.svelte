@@ -47,6 +47,7 @@
     }
 
     li {
+        text-align: center;
         max-width: 130px;
         min-width: 60px;
         display: block;

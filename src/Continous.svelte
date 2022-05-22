@@ -22,7 +22,7 @@
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		let xScale = d3.scaleLinear()
-			.domain(d3.extent(data.Line, d => d.X))
+			.domain(d3.extent(data.Points, d => d.X))
 			.range([0, width]);
 
 		svg.append("g")
@@ -30,7 +30,7 @@
 			.call(d3.axisBottom(xScale));
 
 		let yScale = d3.scaleLinear()
-			.domain([0, d3.max(data.Line, d => d.Y)])
+			.domain([0, d3.max(data.Points, d => d.Y)])
 			.range([ height, 0 ]);
 
     	svg.append("g")
@@ -51,7 +51,7 @@
 			.y(d => yScale(d.Y))
 
 		svg.append("path")
-			.datum(data.Line)
+			.datum(data.Points)
 			.attr("fill", "none")
 			.attr("stroke", "#734f96")
 			.attr("stroke-width", 2.5)
