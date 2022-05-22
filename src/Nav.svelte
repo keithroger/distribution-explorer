@@ -4,9 +4,9 @@
 
     function clickMenu(distribution) {
         formInfo.dist = distribution;
-        formInfo.mode = distribution.modes[0];
+        formInfo.args = distribution.args;
+        formInfo.mode = "Distribution";
         formInfo = {...formInfo}
-        // todo set defaults as arguments
     }
 </script>
 

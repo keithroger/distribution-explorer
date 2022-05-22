@@ -1,18 +1,20 @@
 export let distributions = [{
         name: "Normal",
         continous: true,
-        modes: [
+        params: ["Mu", "Sigma", "x"],
+        args: ["0", "1", "0"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["Mean", "Standard Deviation"],
+                min: "-20",
+                max: "20",
             }, {
-                name: "PDF", // display with point
-                params: ["Mean", "Standard Deviation", "x"],
+                min: "1",
+                max: "5",
             }, {
-                name: "CDF", // display with filled area under curve
-                params: ["Mean", "Standard Deviation", "x"],
-            }
-        ]
+                min: "-20",
+                max: "20",
+            },
+        ],
     }, {
         name: "Student's T",
         continous: true,
