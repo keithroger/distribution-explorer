@@ -1,9 +1,16 @@
+<svelte:head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous">
+</svelte:head>
+
 <script>
+	import {onMount} from "svelte";
+
+	import Katex from "svelte-katex";
+
 	import Nav from "./Nav.svelte";
 	import Continous from "./Continous.svelte";
 	import Discrete from "./Discrete.svelte";
-
-	import {distributions} from "./distributions.js";
+	import distributions from "./distributions.js";
 
 	let modes = ["Distribution", "PDF", "CDF"];
 	let formInfo = {
@@ -11,7 +18,7 @@
 		mode: modes[0],
 		args: distributions[0].args,
 	};
-	console.log(formInfo);
+	$: formula = " " + formInfo.dist.formula.slice(0);
 
 	async function fetchData() {
 		const response = await fetch("/api", {
@@ -36,11 +43,12 @@
         formInfo.args = formInfo.dist.args;
         formInfo.mode = "Distribution";
         formInfo = {...formInfo};
+		console.log(formula);
+
 		promise = fetchData();
 	}
 	
 	let promise = fetchData();
-
 </script>
 
 <Nav on:menuClick={handleMenuClick} {formInfo} {distributions}/>
@@ -50,9 +58,13 @@
 
 	<div class="main-columns">
 		<div>
+			<!-- display formula -->
+			<div>
+				<Katex displayMode>{formula}</Katex>
+			</div>
 			<form>
+				<!-- display different visualization modes -->
 				<label for="mode">Mode:</label>
-
 				<div class="radiobtn-list">
 					{#each modes as mode}
 					<label for={mode}>
@@ -67,7 +79,9 @@
 				<!-- create an input slider for every parameter -->
 				{#each formInfo.dist.params as param, i}
 					{#if param != "x" || formInfo.mode != "Distribution"}
-						<label for={param}>{param} = {formInfo.args[i]}</label>
+						<label for={param}>
+							<Katex>{param} = {formInfo.args[i]}</Katex>
+						</label>
 						<input type="range" {...formInfo.dist.sliders[i]} bind:value={formInfo.args[i]} id={param} 
 							on:change={() => promise = fetchData()}>
 					{/if}
@@ -77,6 +91,7 @@
 
 
 		<div>
+			<!-- Add a discrete or continous display depending on distribution -->
 			{#await promise then data}
 				{#if formInfo.dist.continous === true}
 					<Continous {data}/>
@@ -158,12 +173,6 @@
 	input[type="range"]:focus {
 		outline: none;
 	}
-/* 
-	input[type="range"]::-moz-range-track {
-		background-color: #A682C9;
-		border-radius: 10px;
-		height: 10px;
-	} */
 
 	input[type="range"]::-moz-range-thumb {
 		border: none;
@@ -176,12 +185,6 @@
 	input[type="range"]::-moz-focus-inner {
 		border: 0;
 	}
-/* 
-	input[type="range"]::-webkit-slider-runnable-track {
-		background-color: #A682C9;
-		border-radius: 15px;
-		height: 10px;  
-	} */
 
 	input[type="range"]::-webkit-slider-thumb {
 		-webkit-appearance: none; 
