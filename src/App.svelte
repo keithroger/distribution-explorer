@@ -147,43 +147,51 @@
 
 	input[type="range"] {
 		background: transparent;
-		height: 5px;
+		height: 16px;
+		border-radius: 8px;
 		appearance: none;
+		background-color: #dbd0e6;
 		width: 100%;
+		outline: none;
 	}
 
 	input[type="range"]:focus {
 		outline: none;
 	}
-
+/* 
 	input[type="range"]::-moz-range-track {
 		background-color: #A682C9;
-		border-radius: 5px;
-		height: 5px;
-	}
+		border-radius: 10px;
+		height: 10px;
+	} */
 
 	input[type="range"]::-moz-range-thumb {
 		border: none;
 		border-radius: 50%;
+		height: 20px;
+		width: 20px;
 		background-color: #734f96;
 	}
 
 	input[type="range"]::-moz-focus-inner {
 		border: 0;
 	}
-
+/* 
 	input[type="range"]::-webkit-slider-runnable-track {
 		background-color: #A682C9;
-		border-radius: 5px;
+		border-radius: 15px;
 		height: 10px;  
-	}
+	} */
 
-	/* slider thumb */
 	input[type="range"]::-webkit-slider-thumb {
-		-webkit-appearance: none; /* Override default look */
+		-webkit-appearance: none; 
 		appearance: none;
-		margin-top: -12px; /* Centers thumb on the track */
+		height: 20px;
+		width: 20px;
+		border-radius: 50%;
+		appearance: none;
 		background-color: #734f96;
+		cursor: pointer;
 	}
 
 </style>
