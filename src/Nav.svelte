@@ -1,12 +1,15 @@
 <script>
+    import {createEventDispatcher} from "svelte";
+
     export let formInfo;
     export let distributions;
 
-    function clickMenu(distribution) {
-        formInfo.dist = distribution;
-        formInfo.args = distribution.args;
-        formInfo.mode = "Distribution";
-        formInfo = {...formInfo}
+    const dispatch = createEventDispatcher();
+
+    function menuClick(distribution) {
+        dispatch("menuClick", {
+            selected: distribution,
+        });
     }
 </script>
 
@@ -17,7 +20,7 @@
     <ul class=navbar-menu-items>
         {#each distributions as distribution}
         <li class:selected={formInfo.dist.name == distribution.name}
-            on:click={() => clickMenu(distribution)}>
+            on:click={() => menuClick(distribution)}>
             {distribution.name}
         </li>
         {/each}

@@ -18,106 +18,116 @@ export let distributions = [{
     }, {
         name: "Student's T",
         continous: true,
-        modes: [
+        params: ["Sample Mean", "Sample Standard Deviation", "Degreees of Freedom", "x"],
+        args: ["0", "1", "3", "0"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom"],
+                min: "-20",
+                max: "20",
             }, {
-                name: "PDF",
-                params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom", "x"],
+                min: "1",
+                max: "5",
             }, {
-                name: "CDF",
-                params: ["Sample Mean", "Sample Standard Deviation", "Degrees of Freedom", "x"],
-            }
+                min: "1",
+                max: "50",
+            }, {
+                min: "-20",
+                max: "20",
+            },
         ],
     }, {
         name: "Chi-Squared",
         continous: true,
-        modes: [
+        params: ["Degrees of Freedom", "x"],
+        args: ["4", "2"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["Degrees of Freedom"],
+                min: "2",
+                max: "20",
             }, {
-                name: "PDF",
-                params: ["Degrees of Freedom", "x"]
-            }, {
-                name: "CDF",
-                params: ["Degrees of Freedom", "x"]
-            }
+                min: "0",
+                max: "50",
+            },
         ],
     }, {
         name: "Gamma",
         continous: true,
-        modes: [
+        params: ["Alpha", "Beta", "x"],
+        args: ["5", "5", "5"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["Alpha", "Beta"],
+                min: "1",
+                max: "20",
             }, {
-                name: "PDF",
-                params: ["Alpha", "Beta", "x"]
+                min: "1",
+                max: "20",
             }, {
-                name: "CDF",
-                params: ["Alpha", "Beta", "x"]
-            }
+                min: "0",
+                max: "50",
+            },
         ],
     }, {
         name: "Poisson",
         continous: false,
-        modes: [
+        params: ["Lambda", "x"],
+        args: ["4", "2"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["Lambda"],
+                min: "1",
+                max: "20",
             }, {
-                name: "PDF",
-                params: ["Lambda", "x"],
-            }, {
-                name: "CDF",
-                params: ["Lambda", "x"],
-            }
+                min: "0",
+                max: "50",
+            },
         ],
     }, {
         name: "Binomial",
         continous: false,
-        modes: [
+        params: ["n", "p", "x"],
+        args: ["10", "0.5", "6"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["n", "p"],
+                min: "1",
+                max: "50",
             }, {
-                name: "PDF",
-                params: ["n", "p", "x"],
+                min: "0.05",
+                max: "0.95",
+                step: "0.05",
             }, {
-                name: "CDF",
-                params: ["n", "p", "x"],
-            }
+                min: "0",
+                max: "20",
+            },
         ],
     }, {
         name: "Beta",
         continous: true,
-        modes: [
+        params: ["Alpha", "Beta", "x"],
+        args: ["1", "7", "0.5"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["Alpha", "Beta"],
+                min: "1",
+                max: "20",
             }, {
-                name: "PDF",
-                params: ["Alpha", "Beta", "x"],
+                min: "1",
+                max: "20",
             }, {
-                name: "CDF",
-                params: ["Alpha", "Beta", "x"],
-            }
+                min: "0.05",
+                max: "0.95",
+                step: "0.05",
+            },
         ],
     }, {
         name: "Exponential",
         continous: true,
-        modes: [
+        params: ["Lambda", "x"],
+        args: ["1", "4"],
+        sliders: [
             {
-                name: "Distribution",
-                params: ["Lambda"],
+                min: "1",
+                max: "20",
             }, {
-                name: "PDF",
-                params: ["Lambda", "x"],
-            }, {
-                name: "CDF",
-                params: ["Lambda", "x"],
-            }
+                min: "0",
+                max: "50",
+            },
         ],
     }];

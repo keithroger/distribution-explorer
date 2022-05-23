@@ -30,17 +30,23 @@
 			return json
 		}
 	}
+
+	function handleMenuClick(event) {
+		formInfo.dist = event.detail.selected;
+        formInfo.args = formInfo.dist.args;
+        formInfo.mode = "Distribution";
+        formInfo = {...formInfo};
+		promise = fetchData();
+	}
 	
 	let promise = fetchData();
 
-
 </script>
 
-
-<Nav bind:formInfo={formInfo} {distributions}/>
+<Nav on:menuClick={handleMenuClick} {formInfo} {distributions}/>
 
 <main>
-	<h1>Normal Distribution</h1>
+	<h1>{formInfo.dist.name}</h1>
 
 	<div class="main-columns">
 		<div>

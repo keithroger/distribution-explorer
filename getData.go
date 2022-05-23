@@ -180,10 +180,10 @@ func (d *DistRequest) getData() GraphData {
 			data.CDF = curvePoints(dist, begin, end)
 			data.PDF = []Point{}
 		case "PDF":
-			data.PDF = []Point{{d.Args[2], dist.Prob(d.Args[2])}}
+			data.PDF = []Point{{d.Args[1], dist.Prob(d.Args[1])}}
 			data.CDF = []Point{}
 		case "CDF":
-			begin, end := 0.0, math.Min(d.Args[2], 25.0)
+			begin, end := 0.0, math.Min(d.Args[1], 25.0)
 			data.CDF = curvePoints(dist, begin, end)
 			data.PDF = []Point{}
 		}
