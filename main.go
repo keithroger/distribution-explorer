@@ -76,4 +76,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	go func() {
+		err_http := http.ListenAndServe(fmt.Sprintf(":%d", port), http_r)
+		if err_http != nil {
+			log.Fatal("Web server (HTTP): ", err_http)
+		}
+	}()
+
+	err_https := http.ListenAndServeTLS(:),     "D:/Go/src/www/ssl/public.crt", "D:/Go/src/www/ssl/private.key", https_r)
+	if err_https != nil {
+		log.Fatal("Web server (HTTPS): ", err_https)
+	}
 }
