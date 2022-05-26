@@ -72,7 +72,7 @@ func main() {
 	http.Handle("/", fs)
 	http.HandleFunc("/api", api)
 
-	err := http.ListenAndServe(":80", nil)
+	err := http.ListenAndServeTLS(":443", "cert.pem", "key.pem", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
