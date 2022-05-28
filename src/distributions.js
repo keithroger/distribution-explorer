@@ -88,7 +88,7 @@ let distributions = [
         ],
     }, {
         name: "Binomial",
-        formula: String.raw`f(x;n,p)\binom{n}{x}p^x(1-p)^{n-x}`,
+        formula: String.raw`f(x;n,p)=\binom{n}{x}p^x(1-p)^{n-x}`,
         continous: false,
         params: ["n", "p", "x"],
         args: ["10", "0.5", "6"],
