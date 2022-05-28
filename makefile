@@ -13,7 +13,7 @@ docker:
 	docker build --tag server .
 
 docker-run:
-	docker run -p 8080:80 server
+	docker run -p 80:8080 server
 
 docker-dev:
 	docker run -p 8080:8080 server

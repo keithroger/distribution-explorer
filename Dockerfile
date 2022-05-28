@@ -8,6 +8,6 @@ RUN go mod download
 
 RUN go build -o /server
 
-EXPOSE 5000
+EXPOSE 8080
 
-ENTRYPOINT [ "/server" ]
+CMD [ "/server" ]
