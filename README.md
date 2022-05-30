@@ -1,4 +1,4 @@
-# <center>Distribution Explorer</center>
+# Distribution Explorer
 
 ## About
 
