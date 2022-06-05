@@ -57,12 +57,12 @@ func (d *Distribution) pointsUpTo(points []Point, x float64) []Point {
 
 	for i, point := range points {
 		if point.X > x {
-			upto = i
 			break
 		}
+		upto = i
 	}
 
-	return points[:upto]
+	return points[:upto+1]
 }
 
 func (d *DistRequest) getData() GraphData {

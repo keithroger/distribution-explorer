@@ -34,7 +34,7 @@ let distributions = [
         args: ["10", "0.5"],
         x: "5",
         scales: {
-            xScale: [0, 25],
+            xScale: [0, 24],
             yScale: [0, 1],
         },
         sliders: [
@@ -49,7 +49,7 @@ let distributions = [
         ],
         xSlider: {
             min: "0",
-            max: "25",
+            max: "24",
         },
     }, {
         name: "Chi-Squared",
@@ -150,7 +150,7 @@ let distributions = [
         args: ["4"],
         x: "2",
         scales: {
-            xScale: [0, 25],
+            xScale: [0, 24],
             yScale: [0, 0.4],
         },
         sliders: [
@@ -161,7 +161,7 @@ let distributions = [
         ],
         xSlider: {
             min: "0",
-            max: "25",
+            max: "24",
         },
     }, {
         name: "Student's T",
