@@ -1,12 +1,10 @@
 <script>
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	//import { attr } from 'svelte/internal';
 
 	export let data;
+	export let scales;
 
-	console.log(data)
-	
 	let viz;
 
 	let margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -22,7 +20,7 @@
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		let xScale = d3.scaleLinear()
-			.domain(d3.extent(data.Points, d => d.X))
+			.domain(scales.xScale)
 			.range([0, width]);
 
 		svg.append("g")
@@ -30,7 +28,7 @@
 			.call(d3.axisBottom(xScale));
 
 		let yScale = d3.scaleLinear()
-			.domain([0, d3.max(data.Points, d => d.Y)])
+			.domain(scales.yScale)
 			.range([ height, 0 ]);
 
     	svg.append("g")
@@ -51,7 +49,7 @@
 			.y(d => yScale(d.Y))
 
 		svg.append("path")
-			.datum(data.Points)
+			.datum(data.Curve)
 			.attr("fill", "none")
 			.attr("stroke", "#734f96")
 			.attr("stroke-width", 2.5)

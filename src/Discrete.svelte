@@ -1,12 +1,10 @@
-<script>
+Points<script>
 	import { onMount } from 'svelte';
 	import * as d3 from 'd3';
-	//import { attr } from 'svelte/internal';
 
 	export let data;
+    export let scales
 
-	console.log(data)
-	
 	let viz;
 
 	let margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -22,24 +20,23 @@
 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 		let xScale = d3.scaleBand()
-			.domain(data.Points.map(d => d.X))
+			.domain(data.Curve.map(d => d.X))
 			.range([0, width])
             .padding(0.25);
-            
 
 		svg.append("g")
 			.attr("transform", "translate(0," + height + ")")
 			.call(d3.axisBottom(xScale));
 
 		let yScale = d3.scaleLinear()
-			.domain([0, d3.max(data.Points, d => d.Y)])
+			.domain(scales.yScale)
 			.range([ height, 0 ]);
 
     	svg.append("g")
     		.call(d3.axisLeft(yScale));
 
         svg.selectAll(".bar")
-            .data(data.Points)
+            .data(data.Curve)
             .enter()
             .append("rect")
             .attr("x", d => xScale(d.X))

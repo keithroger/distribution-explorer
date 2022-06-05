@@ -3,8 +3,6 @@
 </svelte:head>
 
 <script>
-	import {onMount} from "svelte";
-
 	import Katex from "svelte-katex";
 
 	import Nav from "./Nav.svelte";
@@ -17,8 +15,10 @@
 		dist: distributions[0],
 		mode: modes[0],
 		args: distributions[0].args,
+		x: distributions[0].x,
 	};
-	$: formula = " " + formInfo.dist.formula.slice(0);
+	$: formula = (" " + formInfo.dist.formula).slice(1);
+	$: scales = formInfo.dist.scales 
 
 	async function fetchData() {
 		const response = await fetch("/api", {
@@ -28,6 +28,7 @@
 				"Name": formInfo.dist.name,
 				"Mode": formInfo.mode,
 				"Args": formInfo.args.map(str => Number(str)), 
+				"X": Number(formInfo.x),
 			})
 		});
 
@@ -41,12 +42,14 @@
 	function handleMenuClick(event) {
 		formInfo.dist = event.detail.selected;
         formInfo.args = formInfo.dist.args;
+		formInfo.x = formInfo.dist.x;
         formInfo.mode = "Distribution";
         formInfo = {...formInfo};
-		console.log(formula);
 
 		promise = fetchData();
 	}
+
+
 	
 	let promise = fetchData();
 </script>
@@ -78,14 +81,21 @@
 
 				<!-- create an input slider for every parameter -->
 				{#each formInfo.dist.params as param, i}
-					{#if param != "x" || formInfo.mode != "Distribution"}
-						<label for={param}>
-							<Katex>{param} = {formInfo.args[i]}</Katex>
-						</label>
-						<input type="range" {...formInfo.dist.sliders[i]} bind:value={formInfo.args[i]} id={param} 
-							on:change={() => promise = fetchData()}>
-					{/if}
+					<label for={param}>
+						<Katex>{param} = {formInfo.args[i]}</Katex>
+					</label>
+					<input type="range" {...formInfo.dist.sliders[i]} bind:value={formInfo.args[i]} id={param} 
+						on:change={() => promise = fetchData()}>
 				{/each}
+
+				<!-- only show x slider when PDF or CDF is selected -->
+				{#if formInfo.mode != "Distribution"}
+					<label for="x">
+						<Katex>x = {formInfo.x}</Katex>
+					</label>
+					<input type="range" {...formInfo.dist.xSlider} bind:value={formInfo.x} id="x"
+						on:change={() => promise = fetchData()}>
+				{/if}
 			</form>
 		</div>
 
@@ -94,9 +104,9 @@
 			<!-- Add a discrete or continous display depending on distribution -->
 			{#await promise then data}
 				{#if formInfo.dist.continous === true}
-					<Continous {data}/>
+					<Continous {data} {scales}/>
 				{:else}
-					<Discrete {data}/>
+					<Discrete {data} {scales}/>
 				{/if}
 			{:catch error}
 				<div class="error">

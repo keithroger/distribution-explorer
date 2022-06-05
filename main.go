@@ -12,32 +12,14 @@ type Point struct {
 }
 
 type GraphData struct {
-	Points []Point
-	PDF    []Point
-	CDF    []Point
+	Curve []Point
+	PDF   []Point
+	CDF   []Point
 }
 
-type Distribution interface {
+type DistuvDist interface {
 	Prob(float64) float64
 	CDF(float64) float64
-}
-
-func curvePoints(dist Distribution, begin, end float64) []Point {
-	if begin >= end {
-		return []Point{}
-	}
-
-	points := make([]Point, n)
-	step := (end - begin) / float64(n)
-
-	for i := 0; i < n; i++ {
-		x := begin + step*float64(i)
-		y := dist.Prob(x)
-
-		points[i] = Point{x, y}
-	}
-
-	return points
 }
 
 func api(w http.ResponseWriter, r *http.Request) {
@@ -49,10 +31,6 @@ func api(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			panic(err)
 		}
-
-		fmt.Println("dist: ", distReq.Name)
-		fmt.Println("mode: ", distReq.Mode)
-		fmt.Println("inputs: ", distReq.Args)
 
 		data := distReq.getData()
 
